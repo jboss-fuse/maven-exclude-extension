@@ -9,6 +9,7 @@
 
   <properties>
     <maven.compiler.release>11</maven.compiler.release>
+    <maven.invoker.plugin-version>3.2.2</maven.invoker.plugin-version>
   </properties>
 
   <dependencies>
@@ -41,6 +42,16 @@
         </configuration>
       </plugin>
     </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <version>${maven.invoker.plugin-version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
   </build>
 
   <profiles>
