@@ -54,6 +54,15 @@ public class ExcludeParticipant extends AbstractMavenLifecycleParticipant {
 
     @Override
     public void afterProjectsRead(MavenSession session) throws MavenExecutionException {
+
+        if (PropertyUtils.isSkip(session)) {
+            LOGGER.debug("***********************************************************");
+            LOGGER.debug("** Skipping the maven-exclude-extension");
+            LOGGER.debug("***********************************************************");
+
+            return;
+        }
+
         File file = new File(session.getRequest().getMultiModuleProjectDirectory(), ".mvn/excludes.txt");
         if (file.canRead()) {
             ExcludePattern exclusions = getExcludePattern(session, file);
