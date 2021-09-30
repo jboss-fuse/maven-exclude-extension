@@ -1,7 +1,7 @@
 package org.jboss.fuse.maven;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -132,7 +131,7 @@ public class ExcludeParticipant extends AbstractMavenLifecycleParticipant {
         MXParser mxParser = new MXParser();
         mxParser.setInput(in);
         XmlPullParser parser = new ExclusionParser(mxParser, removed);
-        try (OutputStreamWriter writer = new FileWriter(excludePomFile, Charset.forName(in.getEncoding()))) {
+         try (OutputStreamWriter writer = new OutputStreamWriter( new FileOutputStream( excludePomFile), Charset.forName( in.getEncoding()))) {
             XmlUtils.writeDocument(parser, writer);
         }
         project.setPomFile(excludePomFile);
@@ -303,7 +302,7 @@ public class ExcludeParticipant extends AbstractMavenLifecycleParticipant {
                             index++;
                         }
                     } else {
-                        if (e.event == TEXT && e.text.isBlank() || e.event == COMMENT) {
+                        if (e.event == TEXT && e.text.trim().isEmpty() || e.event == COMMENT) {
                             spcBuffer.add(e);
                         } else if (e.event == END_TAG) {
                             newBuffer.addAll(spcBuffer);
